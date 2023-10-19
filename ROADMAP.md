@@ -66,3 +66,7 @@ In this *run* stage, we used a few flags:
 - `-d` means it is run in *detached* mode. This means that the container will run in the background.
 - `-p` is used to map ports inside the container to ports in the host machine. In this case, the port `8080` on the host to the port `8080` in the container
 
+#### 4.1.4: Inspecting an image
+One can inspect and get information about a Docker image with the `docker image inspect` command.
+In our case:
+`docker image inspect example/docker-node-hello:latest`
