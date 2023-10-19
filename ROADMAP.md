@@ -49,3 +49,20 @@ CMD ["supervisord", "-n"]
 ```
 The CMD command is the command that is executed when the container starts. Once the command is executed, the container exits.
 This is why we usually see commands that start long-running processes.
+
+
+#### 4.1.2: Build an image
+From the `Dockerfile`, one can build the image with the `docker image build` command.
+```
+docker image build -t example/docker-node-hello:latest .
+```
+
+In this case, the `-t` flag is used to name (or *tag*) the image `example/docker-node-hello:latest`
+
+#### 4.1.3: Running an image
+We can run containers with the image we just built with the command: `docker container run --rm -d -p 8080:8080 <image_name>`. In this case, the name is the one we defined with the `-t` flag in the build stage, `example/docker-node-hello:latest`.
+In this *run* stage, we used a few flags:
+- `--rm` is used to remove (delete) the container after it is stopped
+- `-d` means it is run in *detached* mode. This means that the container will run in the background.
+- `-p` is used to map ports inside the container to ports in the host machine. In this case, the port `8080` on the host to the port `8080` in the container
+
