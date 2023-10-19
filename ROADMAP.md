@@ -101,7 +101,7 @@ Once the image is correctly named, we can upload it to the registry with the `do
 To use the image on another host, one can pull it with the `docker image pull <image-name>` command.
 This is very similar to GitHub repositories!
 
-### 4.2: Troubleshooting:
+### 4.3: Troubleshooting:
 There are many ways to troubleshoot Docker images whe the build goes wrong. Usually, Google (or StackOverflow, or ChatGPT) will guide you to the right solution. However, there are a few things that one can do to troubleshoot the build process. 
 One thing that really helped me understand the build process is to notice that image layers are images themselves. These layers can be ran as containers. This is very useful when trying to debug the build process. For example, if one wants to see what is inside a layer, one can run it as a container with the `docker container run -it <layer-name> bash` command. This will run the layer as a container, and open a bash shell inside the container. From there, one can run commands to inspect the layer, and see what is going on.
 It is worth noting that if `BuildKit` is enabled, we won't be able to approach the debugging process in the same way. In this case, multistage builds can be leveraged to reproduce the error and understand what's happening.
