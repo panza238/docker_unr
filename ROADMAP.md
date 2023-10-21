@@ -105,3 +105,22 @@ This is very similar to GitHub repositories!
 There are many ways to troubleshoot Docker images whe the build goes wrong. Usually, Google (or StackOverflow, or ChatGPT) will guide you to the right solution. However, there are a few things that one can do to troubleshoot the build process. 
 One thing that really helped me understand the build process is to notice that image layers are images themselves. These layers can be ran as containers. This is very useful when trying to debug the build process. For example, if one wants to see what is inside a layer, one can run it as a container with the `docker container run -it <layer-name> bash` command. This will run the layer as a container, and open a bash shell inside the container. From there, one can run commands to inspect the layer, and see what is going on.
 It is worth noting that if `BuildKit` is enabled, we won't be able to approach the debugging process in the same way. In this case, multistage builds can be leveraged to reproduce the error and understand what's happening.
+
+
+## Chapter 05: Working with Containers
+In the last chapter we saw a way to run containers from an image, with the `docker container run` command.
+The `run` command actually executes two sequential commands `create` and `start`.
+The `create` command creates a container from an image, and the `start` command starts the container.
+
+### 5.1: Useful flags
+- `-d` or `--detach`: runs the container in the background
+- `-p` or `--publish`: maps ports from the container to the host
+- `-e` or `--env`: sets environment variables
+- `--name=<name>`: sets the name of the container
+example: `docker container create --name="awesome-service" ubuntu:latest sleep 120`
+- with the `sleep 120` arguments, the container will run for 120 seconds, and then exit. This is useful for testing purposes. `sleep 120` is actually the command ran by the container!
+- The `-l` flag is used to attach labels to the container. This is useful for filtering containers with the `docker container ls --filter label=<label>` command. Example: `docker container ls -a -f label=app=awesome`
+Labels are metadata that can be used to find containers easily
+example: `docker container create --name awesome-service -l app=awesome -l env=dev ubuntu:latest`
+- `-i` is used to run the container interactively. It is usually combined with the `-t` flag and the `/bin/bash` command. `-i` tells the container to keep STDIN open, and `-t` tells the container to allocate a pseudo-TTY (a terminal-like interface).
+example: `docker run --name=ubutest -l test=true -it ubuntu:latest /bin/bash`
