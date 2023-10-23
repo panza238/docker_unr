@@ -152,3 +152,11 @@ If we allocate less memory than needed by the container, the container (actually
 
 **One important distinction the book makes is that memory management is a hard cap, while CPU management is just a priority setting.**
 
+#### 5.1.4: Misc
+- passing the `--restart=on-failure:3` flag will restart the container if it fails. It will try to restart it 3 times before giving up.
+
+### 5.2: Stopping containers
+- `docker container stop` stops the container and sends a `SIGTERM` signal to the process running inside the container. i.e. it terminates the process.
+- `docker container kill` is usually used when something is not working properly. It sends a `SIGKILL` signal to the process running inside the container. i.e. it kills the process. 
+- `docker container pause` just pauses the container. It does not exit, since the process is not terminated.
+
