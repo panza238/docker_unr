@@ -112,7 +112,7 @@ In the last chapter we saw a way to run containers from an image, with the `dock
 The `run` command actually executes two sequential commands `create` and `start`.
 The `create` command creates a container from an image, and the `start` command starts the container.
 
-### 5.1: Useful flags
+### 5.1: Useful Flags
 - `-d` or `--detach`: runs the container in the background
 - `-p` or `--publish`: maps ports from the container to the host
 - `-e` or `--env`: sets environment variables
@@ -124,3 +124,31 @@ Labels are metadata that can be used to find containers easily
 example: `docker container create --name awesome-service -l app=awesome -l env=dev ubuntu:latest`
 - `-i` is used to run the container interactively. It is usually combined with the `-t` flag and the `/bin/bash` command. `-i` tells the container to keep STDIN open, and `-t` tells the container to allocate a pseudo-TTY (a terminal-like interface).
 example: `docker run --name=ubutest -l test=true -it ubuntu:latest /bin/bash`
+
+#### 5.1.1: Volumes and Storage
+Volumes and storage can be managed through the `-v` and `--mount` flags. Most of the time one will use the shorthand `-v` flag. However, `--mount` provides with finer-grained control over the volume.
+example: 
+```
+docker container run -it --rm --name=ubutest -v /mnt/host_data:/container_data ubuntu:latest /bin/bash
+```
+Running the above command will result in a binding between the directory `/mnt/host_data` in the host machine, and the directory `/container_data` in the container. This means that any changes made to the `/container_data` directory in the container will be reflected in the `/mnt/host_data` directory in the host machine, and vice-versa.
+This might be a problem if we don't want the process running inside the container to write to the host machine. In this case, we can use the `--read-only` flag to make the volume read-only.
+Also, using the `--mount` flag we will be able to further configure the volumes mounted.
+example:
+```
+docker container run --rm -ti --read-only=true \
+--mount type=bind,target=/mnt/session_data,source=/data \
+ubuntu:latest /bin/bash
+```
+
+#### 5.1.2: Resource Management: CPU
+- The `--cpu-shares` flag is used to set the CPU shares for the container. The maximum value (which is also the default value) is 1024. 1024 would mean that the container is not restricted, it can use as much CPU as it needs. A value of 512 would mean that the container is capped, and it is restricted to using only half of the computing power
+- The `--cpuset-cpus=0-2` flag is use for hard sharding. This example pins the container to the first 2 CPU cores (cores 0 and 1).*"In this command, the `--cpuset-cpus=0,1` option specifies that these CPUs are CPU 0 and CPU 1 on the host system"*
+- The `--cpus` flag is a way to simplify the control over CPU resource allocation. One can pass a float between 0.01 and the max number of CPUs in the host machine to control the resources each container can use.
+
+#### 5.1.3: Resource Management: Memory
+The memory is allocated trhough the `--memory` flag. There is a way to control how much memory and swap-memory is allocated to the container, but we won't cover it here. 
+If we allocate less memory than needed by the container, the container (actually, the process running in the container) will fail.
+
+**One important distinction the book makes is that memory management is a hard cap, while CPU management is just a priority setting.**
+
