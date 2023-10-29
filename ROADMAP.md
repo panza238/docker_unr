@@ -160,3 +160,7 @@ If we allocate less memory than needed by the container, the container (actually
 - `docker container kill` is usually used when something is not working properly. It sends a `SIGKILL` signal to the process running inside the container. i.e. it kills the process. 
 - `docker container pause` just pauses the container. It does not exit, since the process is not terminated.
 
+## Chapters 06 and 07: Inspection and Debugging
+I will not cover these chapters in detail here, though I recommend reading them. They cover a few useful commands that can be used to inspect and debug containers. 
+However, I feel like inspecting and debugging containers is something that is better learned by doing. The chapters provide general guidelines, but most debugging will be application-specific.
+As one gets more experience with Docker, one will naturally get more familiar with the tools and commands that are useful for debugging.
